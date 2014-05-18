@@ -1,0 +1,21 @@
+problem1
+
+--- CreateGraph ---
+Creates a new graph. The graph is initially empty (has no nodes and no edges).
+If the graph already exists, the output of this command is not defined.
+
+--- AddNode ---
+Adds a specified node to the specified graph.
+If a node with this data is already in the graph, the output of this command is not defined.
+
+--- AddEdge ---
+Creates an edge from the specified parent node to the specified child node with label edgeLabel in the specified graph.
+If either node does not exist in the graph, the output of this command is not defined. If an identical edge (same parent, child, and label) already exists, the output of this command is not defined either.
+
+--- ListNodes ---
+This command has no effect on the graph.
+Outputs a space-separated list of the node data contained in each node of the specified graph. The nodes should appear in alphabetical order.
+
+--- ListChildren ---
+This command has no effect on the graph.
+Outputs a space-separated list of all the childeren of the specified node in the specified graph. The nodes should appear in alphabetical order.

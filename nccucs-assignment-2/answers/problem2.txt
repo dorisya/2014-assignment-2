@@ -1,0 +1,59 @@
+problem2
+
+Graph
+A directed graph consists of a set of nodes, some of which may be connected by edges, and the edges have direction.
+There cannot be more than one edge from a given node to another given node, but there can be an edge from A to B and an edge from B to A.
+
+Graph () --> Initiated as an empty graph. 
+@return
+an empty graph object.
+
+boolean addNode(node) --> Add a node to the graph.
+@requires
+node != null
+@return
+if the node is already in the graph, return false.
+else return true, and there will be a new graph with this node added.
+
+boolean addEdge(parentnode, childnode) --> In the graph, add an edge from parentnode to childnode.
+@requires
+parentnode != null
+childnode != null
+parentnode is in the graph
+childnode is in the graph
+@return
+if the edge is already in the graph, return false.
+else return true, and there will be a new graph with this edge added from parentnode to childnode.
+
+boolean containsNode(node) --> Check if the node is in the graph or not.
+@requires
+node != null
+@return
+if the node already exist in the graph, return true.
+else return false.
+
+boolean containsEdge(parentnode, childnode) --> Check if the edge from parentnode to childnode is in the graph or not.
+@requires
+parentnode != null
+childnode != null
+parentnode is in the graph
+childnode is in the graph
+@return
+if the edge from parentnode to childnode already exist in the graph, return true.
+else return false.
+
+Set<E> listNodes() --> List all nodes in the graph.
+@return
+a fixed order of all nodes in the graph.
+
+Set<E> listChildren(parentnode) --> List the set of children for the parentnode.
+@requires
+parentnode != null
+parentnode is in the graph
+@return
+a fixed order of the children nodes of the specified parent node in the graph.
+
+boolean isEmpty() --> Check the graph is empty or not.
+@return
+if the graph is empty, return true.
+else return false.
