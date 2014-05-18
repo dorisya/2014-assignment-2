@@ -56,6 +56,8 @@ public class PS3TestDriver {
     /** String -> Graph: maps the names of graphs to the actual graph **/
     //TODO for the student: Parameterize the next line correctly.
     //private final Map<String, _______> graphs = new HashMap<String, ________>();
+    private final Map<String, Graph<WeightedNode> > graphs = new HashMap<String, Graph<WeightedNode> >();
+    
     /** String -> WeightedNode: maps the names of nodes to the actual node **/
     private final Map<String, WeightedNode> nodes = new HashMap<String, WeightedNode>();
     private final PrintWriter output;
@@ -143,6 +145,8 @@ public class PS3TestDriver {
 
         // graphs.put(graphName, ___);
         // output.println(...);
+    	graphs.put(graphName, new Graph<WeightedNode>());
+        output.println("created graph "+graphName);
     }
 
     private void createNode(List<String> arguments) {
@@ -161,6 +165,8 @@ public class PS3TestDriver {
 
         // nodes.put(nodeName, ___);
         // output.println(...);
+    	nodes.put(nodeName, new WeightedNode(nodeName, Integer.parseInt(cost)));
+        output.println("created node "+nodeName+" with cost "+cost);
     }
 
     private void addNode(List<String> arguments) {
@@ -180,7 +186,21 @@ public class PS3TestDriver {
         // ___ = graphs.get(graphName);
         // ___ = nodes.get(nodeName);
         // output.println(...);
+    	Graph<WeightedNode> graph = graphs.get(graphName);
+    	WeightedNode node = nodes.get(nodeName);
+    	
+    	if(graph == null){
+    		throw new IllegalArgumentException("graph is null");
+    	}else if(graph.containsNode(node)){
+    		throw new IllegalArgumentException("node already exist in graph");
+    	}
+    	
+    	graph.addNode(nodes.get(nodeName));
+        graphs.put(graphName, graph);
+        
+        output.println("added node "+nodeName+" to "+graphName);
     }
+    	
 
     private void addEdge(List<String> arguments) {
         if (arguments.size() != 3) {
@@ -201,6 +221,22 @@ public class PS3TestDriver {
         // ___ = nodes.get(parentName);
         // ___ = nodes.get(childName);
         // output.println(...);
+    	Graph<WeightedNode> graph = graphs.get(graphName);
+        WeightedNode parentNode = nodes.get(parentName);
+        WeightedNode childNode = nodes.get(childName);
+        
+        if(graph == null){
+    		throw new IllegalArgumentException("graph is null");
+        }else if(!graph.containsNode(parentNode) || !graph.containsNode(childNode)){
+    		throw new IllegalArgumentException("node is not in graph");
+    	}else if(graph.containsEdge(parentNode, childNode)){
+    		throw new IllegalArgumentException("edge already exist in graph");
+    	}
+        
+        graph.addEdge(parentNode, childNode);
+        graphs.put(graphName, graph);
+        
+        output.println("added edge from "+parentName+" to "+childName+" in "+graphName);
     }
 
 
@@ -216,8 +252,23 @@ public class PS3TestDriver {
     private void listNodes(String graphName) {
         // Insert your code here.
 
-        // ___ = graphs.get(graphName);
+    	// ___ = graphs.get(graphName);
         // output.println(...);
+    	Graph<WeightedNode> graph = graphs.get(graphName);
+        if(graph == null){
+    		throw new IllegalArgumentException("graph is null");
+        }
+        
+        String result = "";
+        for(WeightedNode node : graph.listNodes()){
+        	result += " "+node.name();
+        }
+        
+        if(result == ""){
+        	result = " ";
+        }
+        
+        output.println(graphName+" contains:"+result);
     }
 
     private void listChildren(List<String> arguments) {
@@ -236,6 +287,24 @@ public class PS3TestDriver {
         // ___ = graphs.get(graphName);
         // ___ = nodes.get(parentName);
         // output.println(...);
+    	Graph<WeightedNode> graph = graphs.get(graphName);
+        WeightedNode parentNode = nodes.get(parentName);
+        if(graph == null){
+    		throw new IllegalArgumentException("graph is null");
+        }else if(!graph.containsNode(parentNode)){
+    		throw new IllegalArgumentException("node is not in graph");
+    	}
+        
+        String result = "";
+        for(WeightedNode node : graph.listChildren(parentNode)){
+        	result += " "+node.name();
+        }
+        
+        if(result == ""){
+        	result = " ";
+        }
+        
+        output.println("the children of "+parentName+" in "+graphName+" are:"+result);
     }
 
     private void findPath(List<String> arguments) {
@@ -283,6 +352,32 @@ public class PS3TestDriver {
         // Path p = PathFinder.findPath(specializer, ..., ...);
         // output.println(...);
 
+    	Graph<WeightedNode> world = graphs.get(graphName);
+        Set<Path<WeightedNode> > starts = 
+        		new HashSet<Path<WeightedNode> >(); 
+        for(int i = 0; i < sourceArgs.size(); i++){
+        	starts.add(new WeightedNodePath(nodes.get(sourceArgs.get(i))));
+        }
+        
+        Set<WeightedNode> goals = new HashSet<WeightedNode>();
+        for(int j = 0; j < destArgs.size(); j++){
+        	goals.add(nodes.get(destArgs.get(j)));
+        }
+        
+        DijkstraSpecializer<WeightedNode> specializer = new DijkstraSpecializer<WeightedNode>(world);
+        Path<WeightedNode> shortest = 
+        		PathFinder.findPath(specializer, starts, goals); // call static method of PathFinder
+        
+        if(shortest == null){
+        	output.println("no path found in "+graphName);
+        }else{
+	        String result = "";
+	        Iterator<WeightedNode> iter = shortest.iterator();
+	        while(iter.hasNext()){
+	        	result += " "+iter.next().name();
+	        }
+	        output.println("shortest path in "+graphName+":" + result);
+        }
     }
 
     /**
