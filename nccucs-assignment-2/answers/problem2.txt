@@ -1,5 +1,3 @@
-problem2
-
 Graph
 A directed graph consists of a set of nodes, some of which may be connected by edges, and the edges have direction.
 There cannot be more than one edge from a given node to another given node, but there can be an edge from A to B and an edge from B to A.

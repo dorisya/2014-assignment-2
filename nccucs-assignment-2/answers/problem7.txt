@@ -1,1 +1,5 @@
-problem7
+TestFile:
+p3TestGraph
+
+Test for basic function about graph.
+(CreateGraph、CreateNode、AddNode、AddEdge、ListNodes、ListChildren、FindPath)

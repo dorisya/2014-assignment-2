@@ -1,1 +1,3 @@
-problem4
+I use a Map(implemented by Hashmap) to represent my graph, which is used to represent a collection of key / value pairs.
+
+I use DijkstraSpecializer.java to find shortest path.
